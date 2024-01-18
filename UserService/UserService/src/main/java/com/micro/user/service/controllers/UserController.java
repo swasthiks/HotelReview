@@ -33,21 +33,21 @@ public class UserController {
 	}
 //single user get
 	@GetMapping("/{userId}")
-	@CircuitBreaker(name = "RATINGHOTELBREAKER", fallbackMethod = "RATINGHOTELFALLBACK")
+//	@CircuitBreaker(name = "RATINGHOTELBREAKER", fallbackMethod = "RATINGHOTELFALLBACK")
 //	@Retry(name="ratinghotelservice",fallbackMethod = "RATINGHOTELFALLBACK")
-	@RateLimiter(name="UserRateLimiter",fallbackMethod = "RATINGHOTELFALLBACK")
+//	@RateLimiter(name="UserRateLimiter",fallbackMethod = "RATINGHOTELFALLBACK")
 	public ResponseEntity<User> getSingleUser(@PathVariable String userId) {
 		User user = userService.getUser(userId);
 		return ResponseEntity.ok(user);
 	}
 
 //CREATING CALLBACK METHOD FOR CIRCUITBREAKER
-	public ResponseEntity<User> RATINGHOTELFALLBACK(String userId, Exception ex) {
-		ex.printStackTrace();
-		User user = User.builder().email("dummy@gmail.com").name("Dummy")
-				.about("This user is created dummy because some service is down").userId("141234").build();
-		return new ResponseEntity<>(user, HttpStatus.OK);
-	}
+//	public ResponseEntity<User> RATINGHOTELFALLBACK(String userId, Exception ex) {
+//		ex.printStackTrace();
+//		User user = User.builder().email("dummy@gmail.com").name("Dummy")
+//				.about("This user is created dummy because some service is down").userId("141234").build();
+//		return new ResponseEntity<>(user, HttpStatus.OK);
+//	}
 
 //all user get
 	@GetMapping
