@@ -1,0 +1,44 @@
+server:
+  port: 8081
+spring:
+  
+  datasource:
+    name: microservice
+    url: jdbc:mysql://localhost:3306/microservice
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+  application:
+    name: USER-SERVICE
+  config:
+    import: configserver:http://localhost:8085
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+resilience4j:
+  circuitbreaker:
+    instances:
+      RATINGHOTELBREAKER:
+        registerHealthIndicator: true
+        event-consumer-buffer-size: 10
+        
+        
+        
+        
+        
+        
+        

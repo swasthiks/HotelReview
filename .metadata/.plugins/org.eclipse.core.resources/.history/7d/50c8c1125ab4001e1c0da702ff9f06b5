@@ -1,0 +1,5 @@
+package com.rating.Repository;
+
+public class RatingRepository {
+
+}

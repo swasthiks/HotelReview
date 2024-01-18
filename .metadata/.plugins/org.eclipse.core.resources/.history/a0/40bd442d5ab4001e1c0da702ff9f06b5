@@ -1,0 +1,5 @@
+package com.rating.Services;
+
+public class RatingService {
+
+}

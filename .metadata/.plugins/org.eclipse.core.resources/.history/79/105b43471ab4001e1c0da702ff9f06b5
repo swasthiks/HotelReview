@@ -1,0 +1,5 @@
+package com.hotel.Hotel.Repository;
+
+public interface HotelRepository {
+
+}

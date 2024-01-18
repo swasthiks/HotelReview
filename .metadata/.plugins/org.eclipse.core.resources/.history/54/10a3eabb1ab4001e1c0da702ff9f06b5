@@ -1,0 +1,6 @@
+package com.hotel.Hotel.Exceptions;
+
+
+public class ResourceNotFoundException extends RuntimeException{
+
+}

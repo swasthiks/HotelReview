@@ -1,0 +1,8 @@
+package com.rating.Services;
+
+public interface RatingService {
+
+	//create
+	//getall
+	//getone
+}

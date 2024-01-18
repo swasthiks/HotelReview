@@ -1,0 +1,87 @@
+//package com.ApiGateway.config;
+//
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+//import org.springframework.security.config.web.server.ServerHttpSecurity;
+//import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
+//import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
+//import org.springframework.security.web.server.SecurityWebFilterChain;
+//
+//@Configuration
+//@EnableWebFluxSecurity
+//public class SecurityConfig {
+//
+//    @Bean
+//    public ReactiveJwtDecoder reactiveJwtDecoder() {
+//        return NimbusReactiveJwtDecoder.withJwkSetUri("https://dev-81745891.okta.com/oauth2/default/v1/keys").build();
+//    }
+//
+//    @Bean
+//    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+//        http
+//            .authorizeExchange()
+//                .anyExchange().authenticated()
+//                .and()
+//            .oauth2Client()
+//                .and()
+//            .oauth2ResourceServer()
+//                .jwt();
+//        
+//        return http.build();
+//    }
+//}
+package com.ApiGateway.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
+import org.springframework.security.web.server.SecurityWebFilterChain;
+
+@Configuration
+@EnableWebFluxSecurity
+public class SecurityConfig {
+
+    @Bean
+    public ReactiveJwtDecoder reactiveJwtDecoder() {
+        return NimbusReactiveJwtDecoder.withJwkSetUri("https://dev-81745891.okta.com/oauth2/default/v1/keys").build();
+    }
+
+    @Bean
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http, ClientRegistrationRepository clientRegistrationRepository) {
+        http
+                .authorizeExchange(exchange -> exchange
+                        .anyExchange().authenticated())
+                .oauth2Client()
+                .and()
+                .oauth2ResourceServer()
+                .jwt();
+
+        return http.build();
+    }
+
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        return new InMemoryClientRegistrationRepository(
+            ClientRegistration.withRegistrationId("okta")
+                .clientId("0oaei907pjuSscUSo5d7")
+                .clientSecret("kUaO_A2ryFRZytFQfuuKot-IKWbx-")
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .redirectUri("https://dev-81745891.okta.com/oauth2/default")
+                .scope("openid", "profile", "email"," offline_access ")
+                .clientName("Okta")
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .build()
+        );
+    }
+}
+

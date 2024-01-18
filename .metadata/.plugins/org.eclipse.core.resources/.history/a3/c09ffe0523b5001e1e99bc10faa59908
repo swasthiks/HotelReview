@@ -1,0 +1,60 @@
+server:
+  port: 8081
+spring:
+  
+  datasource:
+    name: microservice
+    url: jdbc:mysql://localhost:3306/microservice
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+  application:
+    name: USER-SERVICE
+  config:
+    import: configserver:http://localhost:8085
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+resilience4j:
+  circuitbreaker:
+    instances:
+      RATINGHOTELBREAKER:
+        registerHealthIndicator: true
+        event-consumer-buffer-size: 10
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+        wait-duration-in-open-state: 6s
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-size: 10
+        sliding-window-type: COUNT_BASED
+  retry:
+    instances:
+      ratinghotelservice:
+        max-attempts: 3
+        wait-duration:  5s
+  ratelimiter:
+    instances:
+      UserRateLimiter:
+      
+
+        
+        
+        
+        
+        
+        
